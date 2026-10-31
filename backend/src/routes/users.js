@@ -3,6 +3,51 @@ const bcrypt = require('bcryptjs');
 const pool = require('../db');
 const { requireAuth, requireRole } = require('../middleware/auth');
 const { passwordError } = require('./auth');
+const { wrap, paging } = require('../services/http');
+
+const staffOrAdmin = [requireAuth, requireRole('admin', 'staff')];
+
+// List users with role & search filter (admin/staff only)
+router.get('/', ...staffOrAdmin, wrap(async (req, res) => {
+  const { limit, offset, page } = paging(req);
+  const role = req.query.role || null;
+  const q = req.query.q ? `%${req.query.q.trim()}%` : null;
+
+  const conditions = [];
+  const params = [];
+
+  if (role) {
+    params.push(role);
+    conditions.push(`role = $${params.length}::user_role`);
+  }
+
+  if (q) {
+    params.push(q);
+    conditions.push(`(name ILIKE $${params.length} OR email ILIKE $${params.length})`);
+  }
+
+  const whereClause = conditions.length ? `WHERE ${conditions.join(' AND ')}` : '';
+  params.push(limit, offset);
+  const limitIdx = params.length - 1;
+  const offsetIdx = params.length;
+
+  const { rows } = await pool.query(
+    `SELECT id, name, email, role, created_at, COUNT(*) OVER()::int AS total_count
+     FROM users
+     ${whereClause}
+     ORDER BY id DESC
+     LIMIT $${limitIdx} OFFSET $${offsetIdx}`,
+    params
+  );
+
+  const total = rows[0] ? Number(rows[0].total_count) : 0;
+  res.json({
+    page,
+    limit,
+    total,
+    items: rows.map(({ total_count, ...u }) => u)
+  });
+}));
 
 // Admin only: add a staff member
 router.post('/staff', requireAuth, requireRole('admin'), async (req, res) => {

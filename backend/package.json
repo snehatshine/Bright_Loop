@@ -5,7 +5,10 @@
   "scripts": {
     "start": "node src/app.js",
     "dev": "node --watch src/app.js",
-    "migrate": "node db/migrate.js"
+    "migrate": "node db/migrate.js",
+    "indexes": "node db/apply-indexes.js",
+    "seed:demo": "node db/seed-demo.js",
+    "smoke": "node scripts/smoke-test.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
