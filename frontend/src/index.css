@@ -1,0 +1,66 @@
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700&family=Source+Sans+3:wght@400;600&display=swap');
+
+:root {
+  --ink: #12303d;        /* deep teal-navy */
+  --paper: #f6f8f7;
+  --card: #ffffff;
+  --line: #d5dedb;
+  --loop: #1f8f6b;       /* the one accent: billing "paid" green */
+  --alert: #b3341f;
+  --text: #1c2b30;
+  --muted: #5d6f75;
+  font-family: 'Source Sans 3', system-ui, sans-serif;
+  color: var(--text);
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); }
+h1 { font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-size: 2rem; line-height: 1.15; margin: 0 0 .4rem; color: var(--ink); }
+
+.shell { min-height: 100vh; display: grid; grid-template-columns: minmax(280px, 5fr) 6fr; }
+.brand { background: var(--ink); color: #eaf3ef; padding: 3rem; display: flex; flex-direction: column; justify-content: center; gap: 1rem; }
+.loop { width: min(240px, 60%); }
+.loop-track { fill: none; stroke: #2a4b59; stroke-width: 10; }
+.loop-arc { fill: none; stroke: #5fd3a8; stroke-width: 10; stroke-linecap: round; }
+.loop-dot { fill: #5fd3a8; }
+.brand-name { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 2.2rem; margin: 1rem 0 0; }
+.brand-line { margin: 0; max-width: 28ch; color: #a9c4ba; font-size: 1.1rem; }
+
+.panel { display: grid; place-items: center; padding: 2rem; }
+.card { width: min(100%, 420px); }
+.sub { color: var(--muted); margin: 0 0 1.5rem; }
+
+form { display: grid; gap: 1rem; }
+label { display: grid; gap: .35rem; font-weight: 600; font-size: .95rem; }
+input { font: inherit; padding: .7rem .8rem; border: 1px solid var(--line); border-radius: 6px; background: var(--card); }
+input:focus-visible, button:focus-visible, a:focus-visible { outline: 3px solid #7fc9ae; outline-offset: 2px; }
+button { font: inherit; font-weight: 600; padding: .8rem 1rem; border: 0; border-radius: 6px; background: var(--ink); color: #fff; cursor: pointer; }
+button:hover:not(:disabled) { background: #0c222c; }
+button:disabled { opacity: .5; cursor: not-allowed; }
+button.ghost { background: transparent; color: var(--ink); border: 1px solid var(--line); }
+a { color: var(--ink); }
+.small { font-size: .9rem; justify-self: start; }
+.foot { margin-top: 1.5rem; color: var(--muted); }
+.error { margin: 0; color: var(--alert); font-weight: 600; }
+.success { color: #14684d; font-weight: 600; }
+
+.rules { list-style: none; margin: -.25rem 0 0; padding: 0; display: grid; gap: .2rem; font-size: .9rem; color: var(--muted); }
+.rules li::before { content: '○'; margin-right: .5rem; }
+.rules li.ok { color: #14684d; }
+.rules li.ok::before { content: '●'; }
+
+.home header { display: flex; gap: 1rem; align-items: center; padding: 1rem 2rem; background: var(--ink); color: #fff; }
+.home header strong { font-family: 'Bricolage Grotesque', sans-serif; font-size: 1.3rem; margin-right: auto; }
+.home header .ghost { color: #fff; border-color: #3d5d6b; }
+.home nav { display: flex; flex-wrap: wrap; gap: .5rem; padding: 1rem 2rem; border-bottom: 1px solid var(--line); }
+.home nav a { padding: .4rem .8rem; border-radius: 6px; text-decoration: none; }
+.home nav a:hover { background: #e3ece8; }
+.home section { padding: 2rem; }
+
+@media (max-width: 760px) {
+  .shell { grid-template-columns: 1fr; }
+  .brand { padding: 1.5rem; flex-direction: row; align-items: center; }
+  .loop { width: 64px; flex: none; }
+  .brand-name { margin: 0; font-size: 1.5rem; }
+  .brand-line { display: none; }
+}
+@media (prefers-reduced-motion: no-preference) { button { transition: background .15s; } }
