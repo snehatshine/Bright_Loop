@@ -15,5 +15,8 @@ for (const file of fs.readdirSync(dir).filter(f => f.endsWith('.js'))) {
 }
 
 const port = process.env.PORT || 4000;
-if (require.main === module) app.listen(port, () => console.log(`API on :${port}`));
+if (require.main === module) {
+  require('./services/scheduler').start();
+  app.listen(port, () => console.log(`API on :${port}`));
+}
 module.exports = app;
